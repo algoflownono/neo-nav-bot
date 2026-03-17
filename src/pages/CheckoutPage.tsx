@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { cartStore } from "@/data/cart";
 import { formatPrice } from "@/data/products";
-import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, Shield, Truck } from "lucide-react";
 
 const CheckoutPage = () => {
   const items = useSyncExternalStore(cartStore.subscribe, cartStore.getSnapshot);
@@ -14,14 +14,13 @@ const CheckoutPage = () => {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="neo-container py-24 text-center">
-          <ShoppingBag size={64} className="mx-auto text-muted-foreground/30 mb-6" strokeWidth={1} />
-          <h1 className="text-2xl font-display font-semibold mb-3">Your cart is empty</h1>
-          <p className="text-muted-foreground mb-6">Add some products to get started</p>
-          <Link
-            to="/"
-            className="inline-flex bg-primary text-primary-foreground px-6 py-2.5 rounded-md font-medium hover:brightness-110 transition-all"
-          >
+        <div className="neo-container py-16 sm:py-24 text-center">
+          <div className="w-20 h-20 rounded-full bg-accent mx-auto mb-6 flex items-center justify-center">
+            <ShoppingBag size={40} className="text-muted-foreground/40" strokeWidth={1} />
+          </div>
+          <h1 className="text-xl sm:text-2xl font-display font-semibold mb-3">Your cart is empty</h1>
+          <p className="text-sm text-muted-foreground mb-6">Add some products to get started</p>
+          <Link to="/" className="btn-primary">
             Continue Shopping
           </Link>
         </div>
@@ -33,41 +32,41 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="neo-container py-8">
-        <h1 className="text-2xl font-display font-bold mb-8">Checkout</h1>
+      <main className="neo-container py-6 sm:py-8">
+        <h1 className="text-xl sm:text-2xl font-display font-bold mb-6 sm:mb-8">Checkout</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-3 sm:space-y-4">
             {items.map(item => (
-              <div key={item.product.id} className="flex gap-4 p-4 bg-card border border-border rounded-lg">
-                <img src={item.product.image} alt={item.product.name} className="w-20 h-20 object-cover rounded-md bg-accent" />
+              <div key={item.product.id} className="flex gap-3 sm:gap-4 p-3 sm:p-4 bg-card border border-border rounded-xl shadow-[var(--shadow-sm)]">
+                <img src={item.product.image} alt={item.product.name} className="w-16 sm:w-20 h-16 sm:h-20 object-cover rounded-lg bg-accent" />
                 <div className="flex-1 min-w-0">
-                  <Link to={`/product/${item.product.slug}`} className="text-sm font-medium hover:text-primary transition-colors">
+                  <Link to={`/product/${item.product.slug}`} className="text-xs sm:text-sm font-medium hover:text-primary transition-colors line-clamp-2">
                     {item.product.name}
                   </Link>
-                  <p className="text-xs text-muted-foreground mt-1">{item.product.brand}</p>
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="flex items-center gap-2">
+                  <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{item.product.brand}</p>
+                  <div className="flex items-center justify-between mt-2 sm:mt-3">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                       <button
                         onClick={() => cartStore.updateQuantity(item.product.id, item.quantity - 1)}
-                        className="w-7 h-7 flex items-center justify-center border border-border rounded text-muted-foreground hover:text-foreground"
+                        className="w-6 sm:w-7 h-6 sm:h-7 flex items-center justify-center border border-border rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                       >
                         <Minus size={12} />
                       </button>
-                      <span className="text-sm font-mono tabular-nums w-8 text-center">{item.quantity}</span>
+                      <span className="text-xs sm:text-sm font-mono tabular-nums w-6 sm:w-8 text-center">{item.quantity}</span>
                       <button
                         onClick={() => cartStore.updateQuantity(item.product.id, item.quantity + 1)}
-                        className="w-7 h-7 flex items-center justify-center border border-border rounded text-muted-foreground hover:text-foreground"
+                        className="w-6 sm:w-7 h-6 sm:h-7 flex items-center justify-center border border-border rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                       >
                         <Plus size={12} />
                       </button>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="price-display">{formatPrice(item.product.price * item.quantity)}</span>
+                    <div className="flex items-center gap-2 sm:gap-4">
+                      <span className="price-display text-sm">{formatPrice(item.product.price * item.quantity)}</span>
                       <button
                         onClick={() => cartStore.removeItem(item.product.id)}
-                        className="p-1.5 text-muted-foreground hover:text-destructive transition-colors"
+                        className="p-1.5 text-muted-foreground hover:text-destructive transition-colors rounded-lg hover:bg-destructive/10"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -79,7 +78,7 @@ const CheckoutPage = () => {
           </div>
 
           {/* Order Summary */}
-          <div className="bg-card border border-border rounded-lg p-6 h-fit sticky top-24">
+          <div className="bg-card border border-border rounded-xl p-5 sm:p-6 h-fit sticky top-24 shadow-[var(--shadow-md)]">
             <h2 className="font-display font-semibold text-lg mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between text-muted-foreground">
@@ -88,21 +87,20 @@ const CheckoutPage = () => {
               </div>
               <div className="flex justify-between text-muted-foreground">
                 <span>Shipping</span>
-                <span className="font-mono text-success">Free</span>
+                <span className="font-mono text-success font-medium">Free</span>
               </div>
               <div className="border-t border-border pt-3 flex justify-between font-semibold text-base">
                 <span>Total</span>
                 <span className="price-display">{formatPrice(total)}</span>
               </div>
             </div>
-            <button className="w-full mt-6 bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium
-                           transition-all duration-200 active:scale-[0.98] hover:brightness-110
-                           shadow-[0_1px_0_rgba(255,255,255,0.2)_inset]">
+            <button className="btn-primary w-full justify-center mt-6 py-3">
               Place Order
             </button>
-            <p className="text-[11px] text-muted-foreground text-center mt-3">
-              Secure checkout powered by NeoStore
-            </p>
+            <div className="flex items-center justify-center gap-4 mt-4 text-[10px] sm:text-xs text-muted-foreground">
+              <span className="flex items-center gap-1"><Shield size={12} /> Secure</span>
+              <span className="flex items-center gap-1"><Truck size={12} /> Free Delivery</span>
+            </div>
           </div>
         </div>
       </main>

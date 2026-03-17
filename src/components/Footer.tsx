@@ -12,23 +12,23 @@ export const Footer = () => {
   ];
 
   return (
-    <footer className="bg-foreground text-background/80 mt-24">
-      <div className="neo-container py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer className="bg-foreground text-background/80 mt-16 sm:mt-24">
+      <div className="neo-container py-10 sm:py-16">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Brand */}
-          <div>
-            <div className="text-3xl font-display font-bold tracking-tighter text-background mb-4">neo</div>
-            <div className="space-y-2 text-sm">
+          <div className="col-span-2 sm:col-span-1">
+            <div className="text-2xl sm:text-3xl font-display font-bold tracking-tighter text-background mb-4">neo</div>
+            <div className="space-y-2 text-xs sm:text-sm">
               <div className="flex items-center gap-2">
-                <Mail size={14} />
+                <Mail size={14} className="shrink-0" />
                 <span>neostore99@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock size={14} />
+                <Clock size={14} className="shrink-0" />
                 <span>Sun - Fri: 10AM - 7:30PM</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock size={14} />
+                <Clock size={14} className="shrink-0" />
                 <span>Saturday: 11AM - 6PM</span>
               </div>
             </div>
@@ -36,8 +36,8 @@ export const Footer = () => {
 
           {/* Information */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-background mb-4">Information</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-background mb-3 sm:mb-4">Information</h3>
+            <ul className="space-y-2 text-xs sm:text-sm">
               <li><Link to="/blog" className="hover:text-background transition-colors">Blog</Link></li>
               <li><Link to="/about" className="hover:text-background transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="hover:text-background transition-colors">Contact Us</Link></li>
@@ -46,8 +46,8 @@ export const Footer = () => {
 
           {/* Policies */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-background mb-4">Policies</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-background mb-3 sm:mb-4">Policies</h3>
+            <ul className="space-y-2 text-xs sm:text-sm">
               <li><Link to="/privacy" className="hover:text-background transition-colors">Privacy Policy</Link></li>
               <li><Link to="/return-policy" className="hover:text-background transition-colors">Return Policy</Link></li>
               <li><Link to="/terms" className="hover:text-background transition-colors">Terms & Conditions</Link></li>
@@ -56,8 +56,8 @@ export const Footer = () => {
 
           {/* Customer Service */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-background mb-4">Customer Service</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-background mb-3 sm:mb-4">Customer Service</h3>
+            <ul className="space-y-2 text-xs sm:text-sm">
               <li><Link to="/store-locations" className="hover:text-background transition-colors">Store Locations</Link></li>
               <li><Link to="/service-center" className="hover:text-background transition-colors">Service Center</Link></li>
               <li><Link to="/track-orders" className="hover:text-background transition-colors">Track Orders</Link></li>
@@ -66,14 +66,14 @@ export const Footer = () => {
         </div>
 
         {/* Store Locations */}
-        <div className="mt-16 pt-8 border-t border-background/10">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-background mb-6 text-center">Our Store Locations</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div className="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-background/10">
+          <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-background mb-4 sm:mb-6 text-center">Our Store Locations</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
             {storeLocations.map(loc => (
-              <div key={loc.name} className="text-xs space-y-1">
+              <div key={loc.name} className="text-[10px] sm:text-xs space-y-1 bg-background/5 rounded-lg p-3">
                 <p className="font-semibold text-background">{loc.name}</p>
-                <p className="text-background/60 leading-relaxed">{loc.address}</p>
-                <p className="flex items-center gap-1 text-background/60">
+                <p className="text-background/50 leading-relaxed">{loc.address}</p>
+                <p className="flex items-center gap-1 text-background/50">
                   <Phone size={10} /> {loc.phone}
                 </p>
               </div>
@@ -81,7 +81,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-background/10 text-center text-xs text-background/40">
+        <div className="mt-8 sm:mt-12 pt-4 sm:pt-6 border-t border-background/10 text-center text-[10px] sm:text-xs text-background/30">
           © {new Date().getFullYear()} Neo Store – All Rights Reserved
         </div>
       </div>

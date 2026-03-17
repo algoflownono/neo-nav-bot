@@ -33,21 +33,21 @@ export const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
+      <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-xl border-b border-border shadow-[var(--shadow-sm)]">
         {/* Top bar */}
         <div className="neo-container">
-          <div className="flex items-center justify-between h-16 gap-4">
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-3 sm:gap-4">
             {/* Mobile menu */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-muted-foreground hover:text-foreground"
+              className="lg:hidden p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-accent transition-colors"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 shrink-0">
-              <div className="text-2xl font-display font-bold tracking-tighter text-primary">
+              <div className="text-xl sm:text-2xl font-display font-bold tracking-tighter text-primary">
                 neo
               </div>
             </Link>
@@ -62,18 +62,18 @@ export const Header = () => {
                   onFocus={() => setSearchOpen(true)}
                   onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
                   placeholder="Search products..."
-                  className="w-full h-10 pl-4 pr-10 bg-accent border border-border rounded-md text-sm
+                  className="w-full h-10 pl-4 pr-10 bg-accent border border-border rounded-lg text-sm
                            placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20
                            focus:border-primary transition-all"
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors">
                   <Search size={16} />
                 </button>
               </div>
 
               {/* Search Results Dropdown */}
               {searchOpen && searchResults.length > 0 && (
-                <div className="absolute top-full mt-1 w-full bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50">
+                <div className="absolute top-full mt-2 w-full bg-card border border-border rounded-xl shadow-[var(--shadow-lg)] overflow-hidden z-50">
                   {searchResults.map(product => (
                     <Link
                       key={product.id}
@@ -81,7 +81,7 @@ export const Header = () => {
                       className="flex items-center gap-3 p-3 hover:bg-accent transition-colors"
                       onClick={() => { setSearchQuery(""); setSearchOpen(false); }}
                     >
-                      <img src={product.image} alt={product.name} className="w-10 h-10 object-cover rounded" />
+                      <img src={product.image} alt={product.name} className="w-10 h-10 object-cover rounded-lg bg-accent" />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{product.name}</p>
                         <p className="price-display text-xs">Rs.{product.price.toLocaleString()}</p>
@@ -93,26 +93,26 @@ export const Header = () => {
             </form>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-1 sm:gap-3">
-              <Link to="/rewards" className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <div className="flex items-center gap-0.5 sm:gap-1">
+              <Link to="/rewards" className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors">
                 <Star size={14} />
                 <span className="hidden md:inline">Rewards</span>
               </Link>
-              <Link to="/track-orders" className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/track-orders" className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors">
                 <Package size={14} />
                 <span className="hidden md:inline">Track Orders</span>
               </Link>
-              <Link to="/signin" className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/signin" className="flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors">
                 <User size={16} />
                 <span className="hidden md:inline">Sign In</span>
               </Link>
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative flex items-center gap-1.5 px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="relative flex items-center gap-1.5 px-2 sm:px-3 py-2 text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors"
               >
                 <ShoppingCart size={18} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-mono font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-destructive text-destructive-foreground text-[10px] font-mono font-bold rounded-full flex items-center justify-center animate-fade-in-up">
                     {cartCount}
                   </span>
                 )}
@@ -128,7 +128,7 @@ export const Header = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products..."
-                className="w-full h-10 pl-4 pr-10 bg-accent border border-border rounded-md text-sm
+                className="w-full h-10 pl-4 pr-10 bg-accent border border-border rounded-lg text-sm
                          placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
               <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -139,17 +139,17 @@ export const Header = () => {
         </div>
 
         {/* Sub nav */}
-        <div className="hidden lg:block border-t border-border bg-card">
+        <div className="hidden lg:block border-t border-border bg-card/50">
           <div className="neo-container flex items-center justify-between h-10">
             <div className="flex items-center gap-6">
-              <Link to="/emi" className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
-                <Star size={12} className="text-amber-500" /> EMI
+              <Link to="/emi" className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
+                <Star size={12} className="text-warning" /> EMI
               </Link>
-              <Link to="/feedback" className="text-xs font-medium text-muted-foreground hover:text-foreground">
+              <Link to="/feedback" className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
                 Feedback
               </Link>
             </div>
-            <Link to="/service-center" className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
+            <Link to="/service-center" className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
               <MapPin size={12} /> Service Center
             </Link>
           </div>
@@ -158,8 +158,8 @@ export const Header = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden" onClick={() => setMobileMenuOpen(false)}>
-          <nav className="absolute left-0 top-0 bottom-0 w-72 bg-card shadow-lg p-6 animate-slide-in-right" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-40 bg-foreground/30 backdrop-blur-sm lg:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <nav className="absolute left-0 top-0 bottom-0 w-72 bg-card shadow-[var(--shadow-xl)] p-6 animate-slide-in-right" onClick={e => e.stopPropagation()}>
             <div className="space-y-1">
               {[
                 { name: "Laptops & Computers", slug: "laptops-computers" },
@@ -172,7 +172,7 @@ export const Header = () => {
                 <Link
                   key={cat.slug}
                   to={`/category/${cat.slug}`}
-                  className="block px-3 py-2.5 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
+                  className="block px-3 py-3 text-sm text-foreground hover:bg-primary/5 hover:text-primary rounded-lg transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {cat.name}

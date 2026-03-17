@@ -40,6 +40,10 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -89,12 +93,17 @@ export default {
           from: { transform: "translateX(100%)" },
           to: { transform: "translateX(0)" },
         },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 8px hsl(217 91% 50% / 0.2)" },
+          "50%": { boxShadow: "0 0 20px hsl(217 91% 50% / 0.4)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in-up": "fade-in-up 0.4s cubic-bezier(0.2, 0, 0, 1)",
         "slide-in-right": "slide-in-right 0.3s cubic-bezier(0.2, 0, 0, 1)",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
       },
     },
   },
