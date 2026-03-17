@@ -1,4 +1,3 @@
-import { create } from 'zustand';
 import type { Product } from './products';
 
 // Simple cart using React context pattern
