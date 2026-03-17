@@ -26,17 +26,17 @@ const Index = () => {
       <Header />
       <main className="neo-container">
         {/* Hero + Categories */}
-        <div className="flex gap-6 py-8">
+        <div className="flex gap-4 sm:gap-6 py-4 sm:py-8">
           <div className="hidden lg:block">
             <CategorySidebar />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <HeroBanner />
           </div>
         </div>
 
         {/* New Arrivals + Best Price */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-8">
           <div className="lg:col-span-3">
             <ProductSection title="New Arrivals" products={newArrivals.slice(0, 4)} viewAllLink="/category/new-arrivals" />
           </div>
@@ -46,12 +46,15 @@ const Index = () => {
         </div>
 
         {/* Deal of the Week */}
-        <section className="py-12">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-            <h2 className="section-title">Deal Of The Week</h2>
+        <section className="py-8 sm:py-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-6 bg-destructive rounded-full" />
+              <h2 className="section-title">Deal Of The Week</h2>
+            </div>
             <DealCountdown />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {deals.map((p, i) => (
               <div key={p.id}>
                 <ProductSection title="" products={[p]} />

@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { getProductBySlug, products, formatPrice } from "@/data/products";
 import { cartStore } from "@/data/cart";
-import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw } from "lucide-react";
+import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Star, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductDetailPage = () => {
@@ -38,21 +38,21 @@ const ProductDetailPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="neo-container py-6">
+      <main className="neo-container py-4 sm:py-6">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-8 flex-wrap">
-          <Link to="/" className="hover:text-foreground">Home</Link>
+        <nav className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground mb-6 sm:mb-8 flex-wrap">
+          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <ChevronRight size={12} />
-          <Link to={`/category/${product.categorySlug}`} className="hover:text-foreground">{product.category}</Link>
+          <Link to={`/category/${product.categorySlug}`} className="hover:text-primary transition-colors">{product.category}</Link>
           <ChevronRight size={12} />
-          <span className="text-foreground truncate">{product.name}</span>
+          <span className="text-foreground truncate max-w-[200px] sm:max-w-none">{product.name}</span>
         </nav>
 
         {/* Product Detail */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           {/* Images */}
           <div>
-            <div className="bg-accent rounded-[var(--radius-outer)] p-8 flex items-center justify-center aspect-square">
+            <div className="bg-gradient-to-br from-accent to-muted rounded-[var(--radius-outer)] p-6 sm:p-8 flex items-center justify-center aspect-square border border-border/50 shadow-[var(--shadow-sm)]">
               <img
                 src={product.image}
                 alt={product.name}
@@ -62,54 +62,55 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Info */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
               <p className="spec-label mb-2">{product.brand}</p>
-              <h1 className="text-2xl lg:text-3xl font-display font-bold tracking-tight">{product.name}</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold tracking-tight">{product.name}</h1>
             </div>
 
             {/* Rating */}
             <div className="flex items-center gap-3">
               <div className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
-                  <div
+                  <Star
                     key={i}
-                    className={`w-4 h-4 rounded-sm flex items-center justify-center text-[10px] font-bold
-                      ${i < Math.floor(product.rating) ? "bg-foreground text-background" : "bg-border text-muted-foreground"}`}
-                  >
-                    ★
-                  </div>
+                    size={16}
+                    className={i < Math.floor(product.rating) ? "fill-warning text-warning" : "text-border"}
+                  />
                 ))}
               </div>
               <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
             </div>
 
             {/* Specs */}
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-2 flex-wrap">
               {product.specs.map((spec, i) => (
-                <span key={i} className="px-3 py-1.5 bg-accent rounded-md text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <span key={i} className="px-3 py-1.5 bg-accent border border-border/50 rounded-lg text-xs font-mono uppercase tracking-wider text-muted-foreground">
                   {spec}
                 </span>
               ))}
             </div>
 
             {/* Price */}
-            <div className="flex items-end gap-3">
-              <span className="price-display text-3xl">{formatPrice(product.price)}</span>
+            <div className="flex items-end gap-3 bg-accent/50 border border-border/50 rounded-xl p-4">
+              <span className="price-display text-2xl sm:text-3xl">{formatPrice(product.price)}</span>
               {product.originalPrice && (
-                <span className="price-original text-lg">{formatPrice(product.originalPrice)}</span>
+                <span className="price-original text-base sm:text-lg">{formatPrice(product.originalPrice)}</span>
               )}
               {product.discount && (
-                <span className="neo-badge-sale">{product.discount}% off</span>
+                <span className="neo-badge-sale ml-auto">{product.discount}% off</span>
               )}
             </div>
 
             {/* Stock */}
-            <div className="text-sm">
+            <div className="text-sm flex items-center gap-2">
               {product.inStock ? (
-                <span className="text-success font-medium font-mono">
-                  In Stock{product.stockCount ? `: ${product.stockCount} Units` : ""}
-                </span>
+                <>
+                  <CheckCircle size={16} className="text-success" />
+                  <span className="text-success font-medium font-mono">
+                    In Stock{product.stockCount ? `: ${product.stockCount} Units` : ""}
+                  </span>
+                </>
               ) : (
                 <span className="text-destructive font-medium">Out of Stock</span>
               )}
@@ -120,67 +121,56 @@ const ProductDetailPage = () => {
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium
-                         transition-all duration-200 active:scale-[0.98] active:brightness-90
-                         shadow-[0_1px_0_rgba(255,255,255,0.2)_inset] hover:brightness-110
-                         disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex-1 btn-primary py-3 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ShoppingCart size={18} />
-                Add to Kit
+                Add to Cart
               </button>
               <button
-                onClick={() => { handleAddToCart(); }}
+                onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="px-6 py-3 border border-border rounded-md font-medium text-foreground
-                         hover:bg-accent transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="btn-outline py-3 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Buy Now
               </button>
             </div>
 
             {/* Guarantees */}
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
-              <div className="flex flex-col items-center gap-1.5 text-center">
-                <Truck size={18} className="text-muted-foreground" />
-                <span className="text-[11px] text-muted-foreground">Free Delivery</span>
-              </div>
-              <div className="flex flex-col items-center gap-1.5 text-center">
-                <Shield size={18} className="text-muted-foreground" />
-                <span className="text-[11px] text-muted-foreground">3 Year Warranty</span>
-              </div>
-              <div className="flex flex-col items-center gap-1.5 text-center">
-                <RotateCcw size={18} className="text-muted-foreground" />
-                <span className="text-[11px] text-muted-foreground">Easy Returns</span>
-              </div>
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-border">
+              {[
+                { icon: Truck, label: "Free Delivery" },
+                { icon: Shield, label: "3 Year Warranty" },
+                { icon: RotateCcw, label: "Easy Returns" },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5 text-center p-3 bg-accent/50 rounded-xl">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Icon size={16} className="text-primary" />
+                  </div>
+                  <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mt-16">
-          <div className="flex border-b border-border">
-            <button
-              onClick={() => setActiveTab("description")}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === "description"
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Description
-            </button>
-            <button
-              onClick={() => setActiveTab("specs")}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === "specs"
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Specifications
-            </button>
+        <div className="mt-12 sm:mt-16">
+          <div className="flex border-b border-border gap-0">
+            {(["description", "specs"] as const).map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 sm:px-6 py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors capitalize
+                  ${activeTab === tab
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                {tab === "specs" ? "Specifications" : "Description"}
+              </button>
+            ))}
           </div>
-          <div className="py-8">
+          <div className="py-6 sm:py-8">
             {activeTab === "description" ? (
               <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
                 {product.description}
@@ -192,8 +182,8 @@ const ProductDetailPage = () => {
                     <tbody>
                       {Object.entries(product.detailedSpecs).map(([key, val]) => (
                         <tr key={key} className="border-b border-border">
-                          <td className="py-2.5 font-medium text-foreground w-40">{key}</td>
-                          <td className="py-2.5 text-muted-foreground font-mono text-xs">{val}</td>
+                          <td className="py-3 font-medium text-foreground w-32 sm:w-40">{key}</td>
+                          <td className="py-3 text-muted-foreground font-mono text-xs">{val}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -208,9 +198,12 @@ const ProductDetailPage = () => {
 
         {/* Related */}
         {related.length > 0 && (
-          <section className="py-12 border-t border-border">
-            <h2 className="section-title mb-8">Related Products</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <section className="py-8 sm:py-12 border-t border-border">
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
+              <div className="w-1 h-6 bg-primary rounded-full" />
+              <h2 className="section-title">Related Products</h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
               {related.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} />
               ))}
