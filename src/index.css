@@ -106,7 +106,7 @@
   }
 
   .product-card {
-    @apply group relative flex flex-col gap-3 p-3 rounded-[var(--radius-outer)]
+    @apply relative flex flex-col gap-3 p-3 rounded-[var(--radius-outer)]
            bg-card border border-transparent hover:border-border
            hover:shadow-[var(--shadow-md)] transition-all duration-300;
   }

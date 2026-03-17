@@ -21,7 +21,7 @@ export const ProductCard = ({ product, index = 0 }: Props) => {
   return (
     <Link
       to={`/product/${product.slug}`}
-      className="product-card"
+      className="group product-card"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Badges */}
