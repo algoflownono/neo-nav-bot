@@ -1,7 +1,10 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { wishlistStore } from "@/data/wishlist";
+import { compareStore } from "@/data/compare";
 import { ProductCard } from "@/components/ProductCard";
 import { getProductBySlug, products, formatPrice } from "@/data/products";
 import { cartStore } from "@/data/cart";
