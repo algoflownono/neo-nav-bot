@@ -1,8 +1,10 @@
 import { useSyncExternalStore } from "react";
-import { X, Minus, Plus, ShoppingBag } from "lucide-react";
+import { X, Minus, Plus, ShoppingBag, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cartStore } from "@/data/cart";
+import { wishlistStore } from "@/data/wishlist";
 import { formatPrice } from "@/data/products";
+import { toast } from "sonner";
 
 type Props = { open: boolean; onClose: () => void };
 
@@ -11,6 +13,15 @@ export const CartSidebar = ({ open, onClose }: Props) => {
   const total = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
 
   if (!open) return null;
+
+  const handleSaveForLater = (productId: string) => {
+    const item = items.find(i => i.product.id === productId);
+    if (item) {
+      wishlistStore.toggle(item.product);
+      cartStore.removeItem(productId);
+      toast("Saved to wishlist");
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50" onClick={onClose}>
@@ -59,12 +70,21 @@ export const CartSidebar = ({ open, onClose }: Props) => {
                       >
                         <Plus size={12} />
                       </button>
-                      <button
-                        onClick={() => cartStore.removeItem(item.product.id)}
-                        className="ml-auto text-xs text-destructive hover:underline font-medium"
-                      >
-                        Remove
-                      </button>
+                      <div className="ml-auto flex items-center gap-2">
+                        <button
+                          onClick={() => handleSaveForLater(item.product.id)}
+                          className="text-xs text-muted-foreground hover:text-primary font-medium flex items-center gap-1 transition-colors"
+                          title="Save for later"
+                        >
+                          <Heart size={12} />
+                        </button>
+                        <button
+                          onClick={() => cartStore.removeItem(item.product.id)}
+                          className="text-xs text-destructive hover:underline font-medium"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

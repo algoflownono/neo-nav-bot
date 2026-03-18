@@ -1,7 +1,9 @@
 import { useState, useSyncExternalStore } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, User, Menu, X, Package, Star, MapPin } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X, Package, Star, MapPin, Heart, GitCompareArrows } from "lucide-react";
 import { cartStore } from "@/data/cart";
+import { wishlistStore } from "@/data/wishlist";
+import { compareStore } from "@/data/compare";
 import { products } from "@/data/products";
 import { CartSidebar } from "./CartSidebar";
 
@@ -13,13 +15,16 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const cartItems = useSyncExternalStore(cartStore.subscribe, cartStore.getSnapshot);
+  const wishlistItems = useSyncExternalStore(wishlistStore.subscribe, wishlistStore.getSnapshot);
+  const compareItems = useSyncExternalStore(compareStore.subscribe, compareStore.getSnapshot);
   const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   const searchResults = searchQuery.length > 1
     ? products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.brand.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 5)
+        p.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.specs.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
+      ).slice(0, 6)
     : [];
 
   const handleSearch = (e: React.FormEvent) => {
@@ -34,7 +39,6 @@ export const Header = () => {
   return (
     <>
       <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-xl border-b border-border shadow-[var(--shadow-sm)]">
-        {/* Top bar */}
         <div className="neo-container">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-3 sm:gap-4">
             {/* Mobile menu */}
@@ -61,7 +65,7 @@ export const Header = () => {
                   onChange={(e) => { setSearchQuery(e.target.value); setSearchOpen(true); }}
                   onFocus={() => setSearchOpen(true)}
                   onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
-                  placeholder="Search products..."
+                  placeholder="Search products, brands, specs..."
                   className="w-full h-10 pl-4 pr-10 bg-accent border border-border rounded-lg text-sm
                            placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20
                            focus:border-primary transition-all"
@@ -71,7 +75,7 @@ export const Header = () => {
                 </button>
               </div>
 
-              {/* Search Results Dropdown */}
+              {/* Autocomplete Dropdown */}
               {searchOpen && searchResults.length > 0 && (
                 <div className="absolute top-full mt-2 w-full bg-card border border-border rounded-xl shadow-[var(--shadow-lg)] overflow-hidden z-50">
                   {searchResults.map(product => (
@@ -84,23 +88,47 @@ export const Header = () => {
                       <img src={product.image} alt={product.name} className="w-10 h-10 object-cover rounded-lg bg-accent" />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{product.name}</p>
-                        <p className="price-display text-xs">Rs.{product.price.toLocaleString()}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="price-display text-xs">Rs.{product.price.toLocaleString()}</p>
+                          <span className="text-[10px] text-muted-foreground font-mono">{product.brand}</span>
+                        </div>
                       </div>
                     </Link>
                   ))}
+                  <Link
+                    to={`/search?q=${encodeURIComponent(searchQuery)}`}
+                    className="block text-center py-2.5 text-xs text-primary font-medium hover:bg-accent/50 border-t border-border transition-colors"
+                    onClick={() => { setSearchQuery(""); setSearchOpen(false); }}
+                  >
+                    View all results →
+                  </Link>
                 </div>
               )}
             </form>
 
             {/* Right Actions */}
             <div className="flex items-center gap-0.5 sm:gap-1">
-              <Link to="/rewards" className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors">
-                <Star size={14} />
-                <span className="hidden md:inline">Rewards</span>
+              <Link to="/compare" className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors relative">
+                <GitCompareArrows size={14} />
+                <span className="hidden md:inline">Compare</span>
+                {compareItems.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {compareItems.length}
+                  </span>
+                )}
+              </Link>
+              <Link to="/wishlist" className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors relative">
+                <Heart size={14} />
+                <span className="hidden md:inline">Wishlist</span>
+                {wishlistItems.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-destructive text-destructive-foreground text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {wishlistItems.length}
+                  </span>
+                )}
               </Link>
               <Link to="/track-orders" className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors">
                 <Package size={14} />
-                <span className="hidden md:inline">Track Orders</span>
+                <span className="hidden md:inline">Track</span>
               </Link>
               <Link to="/signin" className="flex items-center gap-1.5 px-2 sm:px-3 py-2 text-xs font-medium text-muted-foreground hover:text-primary rounded-lg hover:bg-accent transition-colors">
                 <User size={16} />
@@ -178,6 +206,14 @@ export const Header = () => {
                   {cat.name}
                 </Link>
               ))}
+            </div>
+            <div className="mt-6 pt-6 border-t border-border space-y-1">
+              <Link to="/wishlist" className="flex items-center gap-2 px-3 py-3 text-sm text-foreground hover:bg-primary/5 hover:text-primary rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                <Heart size={16} /> Wishlist {wishlistItems.length > 0 && `(${wishlistItems.length})`}
+              </Link>
+              <Link to="/compare" className="flex items-center gap-2 px-3 py-3 text-sm text-foreground hover:bg-primary/5 hover:text-primary rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                <GitCompareArrows size={16} /> Compare {compareItems.length > 0 && `(${compareItems.length})`}
+              </Link>
             </div>
           </nav>
         </div>
