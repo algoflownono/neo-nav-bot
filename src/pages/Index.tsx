@@ -77,6 +77,7 @@ const Index = () => {
         <BrandStrip />
       </main>
       <Footer />
+      <MobileBottomNav />
     </div>
   );
 };

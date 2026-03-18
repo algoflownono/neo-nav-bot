@@ -8,7 +8,7 @@ import { compareStore } from "@/data/compare";
 import { ProductCard } from "@/components/ProductCard";
 import { getProductBySlug, products, formatPrice } from "@/data/products";
 import { cartStore } from "@/data/cart";
-import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Star, CheckCircle } from "lucide-react";
+import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Star, CheckCircle, Heart, GitCompareArrows } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductDetailPage = () => {
