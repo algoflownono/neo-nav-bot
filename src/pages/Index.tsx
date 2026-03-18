@@ -23,7 +23,7 @@ const Index = () => {
   const mobiles = products.filter(p => p.categorySlug.includes("mobil")).slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 lg:pb-0">
       <Header />
       <main className="neo-container">
         {/* Hero + Categories */}
