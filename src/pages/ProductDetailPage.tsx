@@ -222,6 +222,7 @@ const ProductDetailPage = () => {
         )}
       </main>
       <Footer />
+      <MobileBottomNav />
     </div>
   );
 };
