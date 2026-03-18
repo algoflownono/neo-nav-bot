@@ -39,7 +39,7 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 lg:pb-0">
       <Header />
       <main className="neo-container py-4 sm:py-6">
         {/* Breadcrumb */}
