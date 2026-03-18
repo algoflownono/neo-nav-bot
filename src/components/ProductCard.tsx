@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, Heart, GitCompareArrows } from "lucide-react";
 import { type Product, formatPrice } from "@/data/products";
 import { cartStore } from "@/data/cart";
+import { wishlistStore } from "@/data/wishlist";
+import { compareStore } from "@/data/compare";
 import { toast } from "sonner";
+import { useSyncExternalStore } from "react";
 
 type Props = {
   product: Product;
@@ -10,12 +13,35 @@ type Props = {
 };
 
 export const ProductCard = ({ product, index = 0 }: Props) => {
+  const wishlist = useSyncExternalStore(wishlistStore.subscribe, wishlistStore.getSnapshot);
+  const compare = useSyncExternalStore(compareStore.subscribe, compareStore.getSnapshot);
+  const isWishlisted = wishlist.some(p => p.id === product.id);
+  const isComparing = compare.some(p => p.id === product.id);
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (!product.inStock) return;
     cartStore.addItem(product);
     toast.success(`${product.name} added to cart`);
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const added = wishlistStore.toggle(product);
+    toast(added ? "Added to wishlist" : "Removed from wishlist");
+  };
+
+  const handleCompare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const result = compareStore.toggle(product);
+    if (result === null) {
+      toast.error("You can compare up to 4 products");
+    } else {
+      toast(result ? "Added to compare" : "Removed from compare");
+    }
   };
 
   return (
@@ -25,7 +51,7 @@ export const ProductCard = ({ product, index = 0 }: Props) => {
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Badges */}
-      <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+      <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
         {product.discount && product.discount > 0 && (
           <span className="neo-badge-sale">{product.discount}% off</span>
         )}
@@ -36,15 +62,31 @@ export const ProductCard = ({ product, index = 0 }: Props) => {
         )}
       </div>
 
-      {/* Wishlist button */}
-      <button
-        className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-card/80 backdrop-blur-sm border border-border/50
-                   flex items-center justify-center text-muted-foreground hover:text-destructive hover:border-destructive/30
-                   opacity-0 group-hover:opacity-100 transition-all duration-200"
-        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-      >
-        <Star size={14} />
-      </button>
+      {/* Action buttons */}
+      <div className="absolute top-2.5 right-2.5 z-10 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200">
+        <button
+          onClick={handleWishlist}
+          className={`w-8 h-8 rounded-full backdrop-blur-sm border flex items-center justify-center transition-all duration-200
+            ${isWishlisted
+              ? "bg-destructive/10 border-destructive/30 text-destructive"
+              : "bg-card/80 border-border/50 text-muted-foreground hover:text-destructive hover:border-destructive/30"
+            }`}
+          title="Add to wishlist"
+        >
+          <Heart size={14} fill={isWishlisted ? "currentColor" : "none"} />
+        </button>
+        <button
+          onClick={handleCompare}
+          className={`w-8 h-8 rounded-full backdrop-blur-sm border flex items-center justify-center transition-all duration-200
+            ${isComparing
+              ? "bg-primary/10 border-primary/30 text-primary"
+              : "bg-card/80 border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30"
+            }`}
+          title="Add to compare"
+        >
+          <GitCompareArrows size={14} />
+        </button>
+      </div>
 
       {/* Image */}
       <div className="product-card-image relative">
@@ -57,7 +99,7 @@ export const ProductCard = ({ product, index = 0 }: Props) => {
       </div>
 
       {/* Quick Specs */}
-      <div className="flex gap-1.5 flex-wrap px-0.5">
+      <div className="flex gap-1 flex-wrap px-0.5">
         {product.specs.slice(0, 3).map((spec, i) => (
           <span key={i} className="px-1.5 py-0.5 bg-accent rounded text-[9px] sm:text-[10px] uppercase tracking-wider font-mono text-muted-foreground">
             {spec}
@@ -90,7 +132,7 @@ export const ProductCard = ({ product, index = 0 }: Props) => {
           <div>
             <span className="price-display text-sm sm:text-base">{formatPrice(product.price)}</span>
             {product.originalPrice && (
-              <span className="price-original ml-1.5 text-xs sm:text-sm">{formatPrice(product.originalPrice)}</span>
+              <span className="price-original ml-1.5 text-[10px] sm:text-xs">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
           <button

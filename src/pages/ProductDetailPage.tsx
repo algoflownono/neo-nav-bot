@@ -1,11 +1,14 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { wishlistStore } from "@/data/wishlist";
+import { compareStore } from "@/data/compare";
 import { ProductCard } from "@/components/ProductCard";
 import { getProductBySlug, products, formatPrice } from "@/data/products";
 import { cartStore } from "@/data/cart";
-import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Star, CheckCircle } from "lucide-react";
+import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Star, CheckCircle, Heart, GitCompareArrows } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductDetailPage = () => {
@@ -36,7 +39,7 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 lg:pb-0">
       <Header />
       <main className="neo-container py-4 sm:py-6">
         {/* Breadcrumb */}
@@ -127,11 +130,18 @@ const ProductDetailPage = () => {
                 Add to Cart
               </button>
               <button
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                className="btn-outline py-3 disabled:opacity-40 disabled:cursor-not-allowed"
+                onClick={() => { const added = wishlistStore.toggle(product); toast(added ? "Added to wishlist" : "Removed from wishlist"); }}
+                className="btn-outline py-3 px-4"
+                title="Add to wishlist"
               >
-                Buy Now
+                <Heart size={18} />
+              </button>
+              <button
+                onClick={() => { const r = compareStore.toggle(product); if (r === null) toast.error("Max 4 products"); else toast(r ? "Added to compare" : "Removed"); }}
+                className="btn-outline py-3 px-4"
+                title="Add to compare"
+              >
+                <GitCompareArrows size={18} />
               </button>
             </div>
 
@@ -212,6 +222,7 @@ const ProductDetailPage = () => {
         )}
       </main>
       <Footer />
+      <MobileBottomNav />
     </div>
   );
 };

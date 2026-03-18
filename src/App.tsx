@@ -10,6 +10,8 @@ import CheckoutPage from "./pages/CheckoutPage";
 import SearchPage from "./pages/SearchPage";
 import SignInPage from "./pages/SignInPage";
 import StoreLocationsPage from "./pages/StoreLocationsPage";
+import WishlistPage from "./pages/WishlistPage";
+import ComparePage from "./pages/ComparePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/search" element={<SearchPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/store-locations" element={<StoreLocationsPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/compare" element={<ComparePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
