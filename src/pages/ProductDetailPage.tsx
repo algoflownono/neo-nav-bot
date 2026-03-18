@@ -130,11 +130,18 @@ const ProductDetailPage = () => {
                 Add to Cart
               </button>
               <button
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                className="btn-outline py-3 disabled:opacity-40 disabled:cursor-not-allowed"
+                onClick={() => { const added = wishlistStore.toggle(product); toast(added ? "Added to wishlist" : "Removed from wishlist"); }}
+                className="btn-outline py-3 px-4"
+                title="Add to wishlist"
               >
-                Buy Now
+                <Heart size={18} />
+              </button>
+              <button
+                onClick={() => { const r = compareStore.toggle(product); if (r === null) toast.error("Max 4 products"); else toast(r ? "Added to compare" : "Removed"); }}
+                className="btn-outline py-3 px-4"
+                title="Add to compare"
+              >
+                <GitCompareArrows size={18} />
               </button>
             </div>
 
